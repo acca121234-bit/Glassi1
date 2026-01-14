@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Application Submitted</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0fdf9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 5px 20px rgba(5, 150, 105, 0.1);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        .icon {
+            font-size: 48px;
+            color: #059669;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            color: #065f46;
+            margin-bottom: 15px;
+            font-size: 28px;
+        }
+        
+        p {
+            color: #374151;
+            line-height: 1.5;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        
+        .highlight {
+            background: #f0fdf9;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #059669;
+            margin: 25px 0;
+        }
+        
+        .highlight p {
+            margin: 0;
+            color: #047857;
+            font-weight: 500;
+        }
+        
+        .email-note {
+            color: #059669;
+            font-weight: 600;
+            margin: 25px 0;
+            font-size: 18px;
+        }
+        
+        .btn {
+            background: #059669;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.3s;
+        }
+        
+        .btn:hover {
+            background: #047857;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icon">✓</div>
+        <h1>Application Submitted</h1>
+        <p>Your application has been successfully received.</p>
+        
+        <div class="email-note">
+            You will receive an email in a few days to fill other details.
+        </div>
+        
+        <div class="highlight">
+            <p>Check your email inbox (and spam folder) for the follow-up form.</p>
+        </div>
+        
+        <!-- Change this button to call closePopup() instead -->
+        <button class="btn" onclick="closePopup()">Back to Home</button>
+    </div>
+
+    <script>
+        // Function to close the parent popup
+        function closePopup() {
+            try {
+                // Method 1: Send message to parent window
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage('closePopup', '*');
+                }
+                
+                // Method 2: Try to call parent's closePopup function directly
+                if (window.parent && window.parent.closePopup) {
+                    window.parent.closePopup();
+                }
+                
+                // Method 3: If we're not in an iframe, just navigate
+                if (window.parent === window) {
+                    window.location.href = '/';
+                }
+                
+            } catch (error) {
+                console.log('Popup close error:', error);
+                // Silent fail - no alert
+            }
+        }
+        
+        // Optional: Auto-close after 10 seconds
+        setTimeout(function() {
+            closePopup();
+        }, 10000);
+    </script>
+</body>
+</html>
